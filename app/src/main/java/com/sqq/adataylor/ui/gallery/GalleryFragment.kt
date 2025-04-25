@@ -98,6 +98,7 @@ class GalleryFragment : Fragment() {
         dialog.show()
     }
 
+    // 修改createCustomFunction方法
     private fun createCustomFunction(dialogBinding: DialogCustomFunctionBinding) {
         val name = dialogBinding.editFunctionName.text.toString()
         val expression = dialogBinding.editFunctionExpression.text.toString()
@@ -115,19 +116,15 @@ class GalleryFragment : Fragment() {
         if (function != null) {
             customFunction = function
             
-            // 更新函数选择列表
-            val functions = homeViewModel.predefinedFunctions.toMutableList()
-            customFunction?.let { functions.add(it) }
+            // 重新设置Spinner适配器
+            setupFunctionSpinner()
             
-            val functionNames = functions.map { it.name }
-            val adapter = ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                functionNames
-            )
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.spinnerFunction.adapter = adapter
-            binding.spinnerFunction.setSelection(functions.size - 1) // 选择新添加的函数
+            // 找到新添加的自定义函数位置并设置选中
+            val newPosition = (homeViewModel.predefinedFunctions.size + 
+                    (if (customFunction != null) 1 else 0)) - 1
+            if (newPosition >= 0 && newPosition < binding.spinnerFunction.adapter.count) {
+                binding.spinnerFunction.setSelection(newPosition)
+            }
             
             Toast.makeText(context, "自定义函数创建成功", Toast.LENGTH_SHORT).show()
         } else {
@@ -135,7 +132,7 @@ class GalleryFragment : Fragment() {
         }
     }
 
-    // 修改setupFunctionSpinner方法，考虑自定义函数
+    // 修改setupFunctionSpinner方法
     private fun setupFunctionSpinner() {
         val functions = mutableListOf<FunctionModel>().apply {
             addAll(homeViewModel.predefinedFunctions)
@@ -154,7 +151,9 @@ class GalleryFragment : Fragment() {
         binding.spinnerFunction.adapter = adapter
         binding.spinnerFunction.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                selectedFunction = functions[position]
+                if (position < functions.size) {
+                    selectedFunction = functions[position]
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
