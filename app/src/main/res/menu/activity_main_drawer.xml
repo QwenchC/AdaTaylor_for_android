@@ -26,6 +26,10 @@
             android:icon="@drawable/ic_menu_pade"
             android:title="@string/menu_pade" />
         <item
+            android:id="@+id/nav_remainder"
+            android:icon="@drawable/ic_remainder"
+            android:title="@string/remainer_analysis" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />

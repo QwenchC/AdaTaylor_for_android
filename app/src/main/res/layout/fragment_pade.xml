@@ -239,7 +239,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="定理6.16验证:"
+                android:text="验证:"
                 android:textStyle="bold"
                 android:layout_marginTop="16dp" />
 
