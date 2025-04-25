@@ -18,6 +18,10 @@
             android:icon="@drawable/ic_menu_wavelet"
             android:title="@string/menu_wavelet" />
         <item
+            android:id="@+id/nav_hybrid"
+            android:icon="@drawable/ic_menu_hybrid"
+            android:title="@string/menu_hybrid" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />

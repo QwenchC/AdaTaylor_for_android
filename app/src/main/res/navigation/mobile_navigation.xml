@@ -28,4 +28,9 @@
         android:name="com.sqq.adataylor.ui.wavelet.WaveletFragment"
         android:label="@string/menu_wavelet"
         tools:layout="@layout/fragment_wavelet" />
+    <fragment
+        android:id="@+id/nav_hybrid"
+        android:name="com.sqq.adataylor.ui.hybrid.HybridFragment"
+        android:label="@string/menu_hybrid"
+        tools:layout="@layout/fragment_hybrid" />
 </navigation>
