@@ -1,6 +1,6 @@
 package com.sqq.adataylor.core
 
-import kotlin.math.pow
+import kotlin.math.*
 
 /**
  * AdaTaylor核心计算类
@@ -28,11 +28,55 @@ class AdaTaylorCore {
     /**
      * 计算阶乘
      */
-    private fun factorial(n: Int): Double {
+    fun factorial(n: Int): Double {
         var result = 1.0
         for (i in 2..n) {
             result *= i
         }
         return result
+    }
+    
+    /**
+     * 估计Taylor展开的截断误差
+     * @param x 计算点
+     * @param x0 展开点
+     * @param nextDerivative 下一阶导数在x0处的值
+     * @param order 当前展开阶数
+     * @return 误差估计值
+     */
+    fun estimateError(x: Double, x0: Double, nextDerivative: Double, order: Int): Double {
+        val nextOrder = order + 1
+        return abs(nextDerivative) * abs(x - x0).pow(nextOrder) / factorial(nextOrder)
+    }
+    
+    /**
+     * 自适应选择Taylor展开的阶数
+     * @param x 计算点
+     * @param x0 展开点
+     * @param derivatives 导数函数列表
+     * @param targetError 目标误差
+     * @param maxOrder 最大允许阶数
+     * @return 合适的展开阶数
+     */
+    fun adaptiveOrder(
+        x: Double,
+        x0: Double,
+        derivatives: List<(Double) -> Double>,
+        targetError: Double,
+        maxOrder: Int = 15
+    ): Int {
+        var order = 1
+        while (order < maxOrder) {
+            if (order + 1 >= derivatives.size) break
+            
+            val nextDerivative = derivatives[order + 1](x0)
+            val error = estimateError(x, x0, nextDerivative, order)
+            
+            if (error < targetError) {
+                return order
+            }
+            order++
+        }
+        return order
     }
 }

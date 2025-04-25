@@ -6,142 +6,194 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Spinner
-        android:id="@+id/spinner_function"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_home" />
-
-    <EditText
-        android:id="@+id/edit_x"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:hint="计算点 x"
-        android:inputType="numberDecimal|numberSigned"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_function" />
-
-    <EditText
-        android:id="@+id/edit_x0"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:hint="展开点 x0"
-        android:inputType="numberDecimal|numberSigned"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_x" />
-
-    <SeekBar
-        android:id="@+id/seekbar_order"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:max="10"
-        android:progress="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_x0" />
-
-    <TextView
-        android:id="@+id/text_order"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="阶数: 3"
-        app:layout_constraintEnd_toEndOf="@+id/seekbar_order"
-        app:layout_constraintStart_toStartOf="@+id/seekbar_order"
-        app:layout_constraintTop_toBottomOf="@+id/seekbar_order" />
-
-    <Button
-        android:id="@+id/button_calculate"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="计算"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_order" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_result"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_calculate">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="16dp">
 
             <TextView
-                android:id="@+id/text_result_title"
+                android:id="@+id/text_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="计算结果"
-                android:textStyle="bold"
-                android:textSize="18sp" />
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:layout_marginBottom="16dp" />
 
             <TextView
-                android:id="@+id/text_result_exact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="选择函数:"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"/>
+
+            <Spinner
+                android:id="@+id/spinner_function"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="计算设置:"
+                android:textStyle="bold"
+                android:layout_marginTop="16dp"/>
+
+            <EditText
+                android:id="@+id/edit_x"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="精确值: " />
+                android:hint="计算点 x"
+                android:inputType="numberDecimal|numberSigned" />
 
-            <TextView
-                android:id="@+id/text_result_approximate"
+            <EditText
+                android:id="@+id/edit_x0"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="近似值: " />
+                android:layout_marginTop="8dp"
+                android:hint="展开点 x0"
+                android:inputType="numberDecimal|numberSigned" />
 
-            <TextView
-                android:id="@+id/text_result_error"
+            <Switch
+                android:id="@+id/switch_adaptive"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:text="误差: " />
+                android:layout_marginTop="16dp"
+                android:text="自适应计算阶数"
+                android:textSize="16sp" />
 
+            <LinearLayout
+                android:id="@+id/layout_manual_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
+
+                <TextView
+                    android:id="@+id/text_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="阶数: 3"
+                    android:textAlignment="center" />
+
+                <SeekBar
+                    android:id="@+id/seekbar_order"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:max="10"
+                    android:progress="3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_adaptive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="8dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="目标误差:"
+                    android:textAlignment="center" />
+
+                <EditText
+                    android:id="@+id/edit_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="如: 0.0001"
+                    android:inputType="numberDecimal"
+                    android:text="0.0001" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/button_calculate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="计算" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/text_result_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="计算结果"
+                        android:textStyle="bold"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/text_result_function"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="函数: " />
+
+                    <TextView
+                        android:id="@+id/text_result_points"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="计算点: x=?, 展开点: x0=?" />
+
+                    <TextView
+                        android:id="@+id/text_result_order"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="展开阶数: " />
+
+                    <TextView
+                        android:id="@+id/text_result_exact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="精确值: " />
+
+                    <TextView
+                        android:id="@+id/text_result_approximate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="近似值: " />
+
+                    <TextView
+                        android:id="@+id/text_result_error"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="实际误差: " />
+
+                    <TextView
+                        android:id="@+id/text_result_error_estimate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="误差估计: " />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

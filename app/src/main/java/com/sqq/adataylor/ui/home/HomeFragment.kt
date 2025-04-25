@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CompoundButton
 import android.widget.SeekBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sqq.adataylor.data.FunctionModel
+import com.sqq.adataylor.data.TaylorResult
 import com.sqq.adataylor.databinding.FragmentHomeBinding
+import java.text.DecimalFormat
 
 class HomeFragment : Fragment() {
 
@@ -21,6 +24,7 @@ class HomeFragment : Fragment() {
     private lateinit var homeViewModel: HomeViewModel
     private var selectedFunction: FunctionModel? = null
     private var currentOrder = 3
+    private val decimalFormat = DecimalFormat("#.########")
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,6 +43,7 @@ class HomeFragment : Fragment() {
 
         setupFunctionSpinner()
         setupOrderSeekBar()
+        setupAdaptiveSwitch()
         setupCalculateButton()
 
         return root
@@ -79,6 +84,18 @@ class HomeFragment : Fragment() {
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
     }
+    
+    private fun setupAdaptiveSwitch() {
+        binding.switchAdaptive.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                binding.layoutManualOrder.visibility = View.GONE
+                binding.layoutAdaptive.visibility = View.VISIBLE
+            } else {
+                binding.layoutManualOrder.visibility = View.VISIBLE
+                binding.layoutAdaptive.visibility = View.GONE
+            }
+        }
+    }
 
     private fun setupCalculateButton() {
         binding.buttonCalculate.setOnClickListener {
@@ -90,12 +107,25 @@ class HomeFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val result = homeViewModel.calculateTaylor(selectedFunction!!, x, x0, currentOrder)
+            val result = if (binding.switchAdaptive.isChecked) {
+                val targetError = binding.editError.text.toString().toDoubleOrNull() ?: 0.0001
+                homeViewModel.calculateAdaptiveTaylor(selectedFunction!!, x, x0, targetError)
+            } else {
+                homeViewModel.calculateTaylor(selectedFunction!!, x, x0, currentOrder)
+            }
             
-            binding.textResultExact.text = "精确值: ${result.exactValue}"
-            binding.textResultApproximate.text = "近似值: ${result.approximateValue}"
-            binding.textResultError.text = "误差: ${result.error}"
+            displayResult(result)
         }
+    }
+    
+    private fun displayResult(result: TaylorResult) {
+        binding.textResultFunction.text = "函数: ${selectedFunction?.expression}"
+        binding.textResultPoints.text = "计算点: x=${result.x}, 展开点: x0=${result.x0}"
+        binding.textResultOrder.text = "展开阶数: ${result.order}"
+        binding.textResultExact.text = "精确值: ${decimalFormat.format(result.exactValue)}"
+        binding.textResultApproximate.text = "近似值: ${decimalFormat.format(result.approximateValue)}"
+        binding.textResultError.text = "实际误差: ${decimalFormat.format(result.error)}"
+        binding.textResultErrorEstimate.text = "误差估计: ${decimalFormat.format(result.errorEstimate)}"
     }
 
     override fun onDestroyView() {
