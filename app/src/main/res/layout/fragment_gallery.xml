@@ -40,46 +40,100 @@
         app:layout_constraintTop_toTopOf="@+id/spinner_function"
         app:layout_constraintBottom_toBottomOf="@+id/spinner_function" />
 
+    <TextView
+        android:id="@+id/text_function_expression"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:textStyle="italic"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinner_function" />
+
+    <TextView
+        android:id="@+id/text_range_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="显示范围:"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_function_expression" />
 
     <LinearLayout
         android:id="@+id/layout_range"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
         android:orientation="horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_function">
+        app:layout_constraintTop_toBottomOf="@+id/text_range_label">
 
-        <EditText
-            android:id="@+id/edit_range_start"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="起始值"
-            android:inputType="numberDecimal|numberSigned"
-            android:text="-5" />
+            android:layout_marginEnd="4dp"
+            android:hint="左端点">
 
-        <EditText
-            android:id="@+id/edit_range_end"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_range_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="结束值"
-            android:inputType="numberDecimal|numberSigned"
-            android:text="5" />
+            android:layout_marginStart="4dp"
+            android:hint="右端点">
 
-        <EditText
-            android:id="@+id/edit_x0"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="展开点"
-            android:inputType="numberDecimal|numberSigned"
-            android:text="0" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edit_range_end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal|numberSigned" />
+        </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_x0_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="展开点:"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout_range" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_x0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:hint="展开点 (x₀)"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_x0_label">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_x0"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal|numberSigned" />
+    </com.google.android.material.textfield.TextInputLayout>
 
     <SeekBar
         android:id="@+id/seekbar_order"
@@ -92,7 +146,7 @@
         android:progress="3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layout_range" />
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_x0" />
 
     <TextView
         android:id="@+id/text_order"
@@ -128,19 +182,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button_plot" />
-
-    <!-- 在布局中添加函数表达式显示 -->
-    <TextView
-        android:id="@+id/text_function_expression"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:textStyle="italic"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_function" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
