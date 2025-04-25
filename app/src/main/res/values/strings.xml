@@ -12,4 +12,5 @@
     <string name="menu_slideshow">示例</string>
     <string name="menu_wavelet">小波分析</string>
     <string name="menu_hybrid">小波-泰勒混合逼近</string>
+    <string name="menu_pade">泰勒-帕德比较</string>
 </resources>

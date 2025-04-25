@@ -22,6 +22,10 @@
             android:icon="@drawable/ic_menu_hybrid"
             android:title="@string/menu_hybrid" />
         <item
+            android:id="@+id/nav_pade"
+            android:icon="@drawable/ic_menu_pade"
+            android:title="@string/menu_pade" />
+        <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />

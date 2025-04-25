@@ -125,8 +125,53 @@ object PredefinedFunctions {
         domain = Pair(0.1, 10.0)
     )
 
+    // 有理函数 1/(1+x)
+    val rationalFunction1 = FunctionModel(
+        name = "有理函数 1/(1+x)",
+        expression = "1/(1+x)",
+        derivatives = listOf("1/(1+x)", "-1/(1+x)²", "2/(1+x)³", "-6/(1+x)⁴", "24/(1+x)⁵"),
+        derivativeFunctions = listOf(
+            { x -> 1.0 / (1.0 + x) },
+            { x -> -1.0 / Math.pow(1.0 + x, 2.0) },
+            { x -> 2.0 / Math.pow(1.0 + x, 3.0) },
+            { x -> -6.0 / Math.pow(1.0 + x, 4.0) },
+            { x -> 24.0 / Math.pow(1.0 + x, 5.0) },
+            { x -> -120.0 / Math.pow(1.0 + x, 6.0) },
+            { x -> 720.0 / Math.pow(1.0 + x, 7.0) },
+            { x -> -5040.0 / Math.pow(1.0 + x, 8.0) },
+            { x -> 40320.0 / Math.pow(1.0 + x, 9.0) },
+            { x -> -362880.0 / Math.pow(1.0 + x, 10.0) }
+        ),
+        mainFunction = { x -> 1.0 / (1.0 + x) },
+        defaultX0 = 0.0,
+        domain = Pair(-0.9, 5.0)
+    )
+
+    // 有理函数 x/(1+x²)
+    val rationalFunction2 = FunctionModel(
+        name = "有理函数 x/(1+x²)",
+        expression = "x/(1+x²)",
+        derivatives = listOf(
+            "x/(1+x²)", 
+            "(1-x²)/(1+x²)²", 
+            "-2x(3+x²)/(1+x²)³", 
+            "6(x⁴+6x²-1)/(1+x²)⁴", 
+            "-24x(x⁴+10x²-5)/(1+x²)⁵"
+        ),
+        derivativeFunctions = listOf(
+            { x -> x / (1.0 + x * x) },
+            { x -> (1.0 - x * x) / Math.pow(1.0 + x * x, 2.0) },
+            { x -> -2.0 * x * (3.0 + x * x) / Math.pow(1.0 + x * x, 3.0) },
+            { x -> 6.0 * (Math.pow(x, 4.0) + 6.0 * x * x - 1.0) / Math.pow(1.0 + x * x, 4.0) },
+            { x -> -24.0 * x * (Math.pow(x, 4.0) + 10.0 * x * x - 5.0) / Math.pow(1.0 + x * x, 5.0) }
+        ),
+        mainFunction = { x -> x / (1.0 + x * x) },
+        defaultX0 = 0.0,
+        domain = Pair(-5.0, 5.0)
+    )
+
     // 获取所有预定义函数
     fun getAllFunctions(): List<FunctionModel> {
-        return listOf(exponential, sine, cosine, logarithm)
+        return listOf(exponential, sine, cosine, logarithm, rationalFunction1, rationalFunction2)
     }
 }
