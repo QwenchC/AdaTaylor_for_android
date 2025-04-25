@@ -5,9 +5,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.HapticFeedbackConstants
 import android.view.Menu
+import android.view.MenuItem
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.WebView
+import android.app.Dialog
+import android.view.Window
+import android.widget.Button
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -164,6 +169,125 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.main, menu)
         return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_theory -> {
+                showTheoryContent()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun showTheoryContent() {
+        // 使用WebView创建一个对话框，以支持LaTeX公式渲染
+        val dialog = Dialog(this)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(R.layout.dialog_theory_content)
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        
+        val webView = dialog.findViewById<WebView>(R.id.webview_theory)
+        webView.settings.javaScriptEnabled = true
+        
+        // 加载HTML内容
+        val htmlContent = """
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta charset="UTF-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                <link rel="stylesheet" href="file:///android_asset/katex/katex.min.css">
+                <script src="file:///android_asset/katex/katex.min.js"></script>
+                <script src="file:///android_asset/katex/auto-render.min.js"></script>
+                <style>
+                    body { 
+                        padding: 12px; 
+                        font-family: 'Arial', sans-serif;
+                        line-height: 1.6;
+                    }
+                    h1 { font-size: 1.8em; color: #333; margin-top: 20px; }
+                    h2 { font-size: 1.5em; color: #444; margin-top: 18px; }
+                    h3 { font-size: 1.3em; color: #555; margin-top: 16px; }
+                    .theorem { 
+                        background-color: #f8f9fa; 
+                        padding: 10px; 
+                        border-left: 4px solid #673AB7; 
+                        margin: 10px 0;
+                    }
+                    .proof {
+                        font-style: italic;
+                        margin-left: 20px;
+                    }
+                    code {
+                        background-color: #f5f5f5;
+                        padding: 2px 5px;
+                        border-radius: 3px;
+                        font-family: monospace;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>AdaTaylor：自适应泰勒展开逼近理论与方法</h1>
+                
+                <h2>1. 自适应阶数选择的数学理论</h2>
+                
+                <h3>1.1 泰勒展开的余项理论</h3>
+                <p>对于在点\(x_0\)邻域内\(n+1\)阶可导的函数\(f(x)\)，其\(n\)阶泰勒展开可表示为：</p>
+                <p>\[f(x) = \sum_{k=0}^{n}\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k + R_n(x)\]</p>
+                <p>其中\(R_n(x)\)为余项，可用拉格朗日形式表示：</p>
+                <p>\[R_n(x) = \frac{f^{(n+1)}(\xi)}{(n+1)!}(x-x_0)^{n+1}\]</p>
+                <p>其中\(\xi\)在\(x_0\)与\(x\)之间。若在区间\([a,b]\)上有\(\left|f^{(n+1)}(x)\right| \leq M_{n+1}\)，则余项的绝对值满足：</p>
+                <p>\[|R_n(x)| \leq \frac{M_{n+1}}{(n+1)!}|x-x_0|^{n+1}\]</p>
+                
+                <!-- 继续其他内容... -->
+                
+                <h3>1.2 自适应阶数选择的数学准则</h3>
+                <p>给定误差容限\(\varepsilon\)和定义域\([a,b]\)，AdaTaylor系统基于以下数学准则自动选择展开阶数：</p>
+                
+                <div class="theorem">
+                    <strong>定理1</strong> (自适应阶数选择准则)：对于在区间\([a,b]\)上\(n+1\)阶可导的函数\(f(x)\)，若要求泰勒展开在整个区间上的误差不超过\(\varepsilon\)，则所需的最小展开阶数\(n\)满足：
+                    <p>\[\frac{M_{n+1}}{(n+1)!}d^{n+1} < \varepsilon\]</p>
+                    <p>其中\(d = \max\{|a-x_0|, |b-x_0|\}\)，\(M_{n+1}\)为\(|f^{(n+1)}(x)|\)在区间\([a,b]\)上的上界。</p>
+                </div>
+                
+                <div class="proof">
+                    <strong>证明</strong>：根据拉格朗日余项公式，对于区间\([a,b]\)内任意点\(x\)，有
+                    \(|R_n(x)| \leq \frac{M_{n+1}}{(n+1)!}|x-x_0|^{n+1}\)。
+                    由于\(|x-x_0| \leq d\)，因此\(|R_n(x)| \leq \frac{M_{n+1}}{(n+1)!}d^{n+1}\)。
+                    当\(\frac{M_{n+1}}{(n+1)!}d^{n+1} < \varepsilon\)时，区间内所有点的误差都小于\(\varepsilon\)。\(\square\)
+                </div>
+
+                <p>更多内容见毕设论文……</p>
+                
+                <!-- 继续更多内容... -->
+                
+            </body>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    renderMathInElement(document.body, {
+                        delimiters: [
+                            {left: "$$", right: "$$", display: true},
+                            {left: "$", right: "$", display: false},
+                            {left: "\\[", right: "\\]", display: true},
+                            {left: "\\(", right: "\\)", display: false}
+                        ]
+                    });
+                });
+            </script>
+            </html>
+        """.trimIndent()
+        
+        webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
+        
+        // 添加关闭按钮
+        val closeButton = dialog.findViewById<Button>(R.id.button_close_theory)
+        closeButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        
+        dialog.show()
     }
 
     override fun onSupportNavigateUp(): Boolean {
