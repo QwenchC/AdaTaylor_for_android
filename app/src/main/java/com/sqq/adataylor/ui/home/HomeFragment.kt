@@ -212,10 +212,17 @@ class HomeFragment : Fragment() {
         binding.textResultFunction.text = "函数: ${selectedFunction?.expression ?: "未知函数"}"
         binding.textResultPoints.text = "计算点: x=${result.x}, 展开点: x0=${result.x0}"
         binding.textResultOrder.text = "展开阶数: ${result.order}"
+        
         binding.textResultExact.text = "精确值: ${decimalFormat.format(result.exactValue)}"
         binding.textResultApproximate.text = "近似值: ${decimalFormat.format(result.approximateValue)}"
-        binding.textResultError.text = "实际误差: ${decimalFormat.format(result.error)}"
+        binding.textResultError.text = "误差: ${decimalFormat.format(result.error)}"
         binding.textResultErrorEstimate.text = "误差估计: ${decimalFormat.format(result.errorEstimate)}"
+        
+        // 添加泰勒展开式显示
+        val taylorExpansionText = homeViewModel.getTaylorExpansionText(
+            selectedFunction!!, result.x0, result.order
+        )
+        binding.textTaylorExpansion.text = "泰勒展开式: $taylorExpansionText"
     }
 
     override fun onDestroyView() {

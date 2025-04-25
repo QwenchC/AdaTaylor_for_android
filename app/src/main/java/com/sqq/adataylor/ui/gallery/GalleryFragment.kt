@@ -222,6 +222,13 @@ class GalleryFragment : Fragment() {
             currentOrder
         )
         
+        // 显示泰勒展开式
+        val taylorExpansionText = galleryViewModel.getTaylorExpansionText(
+            selectedFunction!!, x0, currentOrder
+        )
+        binding.textTaylorExpansion.text = "泰勒展开式: $taylorExpansionText"
+        
+        // 绘制图表 - 原有代码
         // 转换为Entry对象
         val exactEntries = exactPoints.map { Entry(it.x.toFloat(), it.y.toFloat()) }
         val taylorEntries = taylorPoints.map { Entry(it.x.toFloat(), it.y.toFloat()) }

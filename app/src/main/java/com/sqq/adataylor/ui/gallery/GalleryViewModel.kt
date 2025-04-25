@@ -95,4 +95,16 @@ class GalleryViewModel : ViewModel() {
         
         return result
     }
+
+    /**
+     * 获取泰勒展开式文本表示
+     */
+    fun getTaylorExpansionText(function: FunctionModel, x0: Double, order: Int): String {
+        // 获取导数值
+        val derivatives = function.derivativeFunctions
+            .take(order + 1)
+            .map { it(x0) }
+        
+        return adaTaylorCore.generateTaylorExpansionText(x0, derivatives, order)
+    }
 }

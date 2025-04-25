@@ -170,17 +170,34 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_order" />
 
+    <!-- 在绘制图形按钮下方、图表上方添加 -->
+    <TextView
+        android:id="@+id/text_taylor_expansion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="#F5F5F5"
+        android:padding="8dp"
+        android:textIsSelectable="true"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_plot" />
+
+    <!-- 修改chart的约束，让它在text_taylor_expansion下方 -->
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_plot" />
+        app:layout_constraintTop_toBottomOf="@+id/text_taylor_expansion" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
