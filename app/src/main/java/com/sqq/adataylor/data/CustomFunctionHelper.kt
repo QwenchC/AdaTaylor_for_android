@@ -27,33 +27,37 @@ class CustomFunctionHelper {
         }
     }
     
-    /**
-     * 数值微分计算导数
-     * @param func 原函数
-     * @param order 导数阶数
-     * @param h 微分步长
-     */
+    // 修复数值导数计算函数
     fun numericalDerivative(
         func: (Double) -> Double,
         order: Int,
         h: Double = 0.0001
     ): (Double) -> Double {
-        return when (order) {
-            0 -> func
-            1 -> { x -> (func(x + h) - func(x - h)) / (2 * h) }
-            2 -> { x -> (func(x + h) - 2 * func(x) + func(x - h)) / (h * h) }
-            3 -> { x -> 
+        if (order == 0) return func
+        
+        if (order == 1) {
+            return { x -> (func(x + h) - func(x - h)) / (2 * h) }
+        }
+        
+        if (order == 2) {
+            return { x -> (func(x + h) - 2 * func(x) + func(x - h)) / (h * h) }
+        }
+        
+        if (order == 3) {
+            return { x -> 
                 (func(x + 2*h) - 2*func(x + h) + 2*func(x - h) - func(x - 2*h)) / (2 * h * h * h)
             }
-            4 -> { x ->
+        }
+        
+        if (order == 4) {
+            return { x ->
                 (func(x + 2*h) - 4*func(x + h) + 6*func(x) - 4*func(x - h) + func(x - 2*h)) / (h * h * h * h)
             }
-            else -> { x ->
-                // 对于高阶导数，递归计算
-                val lowerDerivative = numericalDerivative(func, order - 1, h)
-                (lowerDerivative(x + h) - lowerDerivative(x - h)) / (2 * h)
-            }
         }
+        
+        // 对于更高阶导数，通过先计算一阶导数，然后递归地对其求导
+        val firstDerivative = numericalDerivative(func, 1, h)
+        return numericalDerivative(firstDerivative, order - 1, h)
     }
     
     /**
@@ -73,7 +77,8 @@ class CustomFunctionHelper {
         
         // 添加10个导数函数
         for (i in 1..9) {
-            derivativeFunctions.add(numericalDerivative(mainFunc, i))
+            val derivFunc: (Double) -> Double = numericalDerivative(mainFunc, i)
+            derivativeFunctions.add(derivFunc)
         }
         
         // 创建导数表达式描述列表

@@ -11,6 +11,9 @@ class RemainderCore {
     
     private val adaTaylorCore = AdaTaylorCore()
     
+    // 添加最大支持阶数的常量
+    private val MAX_SUPPORTED_ORDER = 10
+    
     /**
      * 计算泰勒展开的余项
      */
@@ -21,6 +24,11 @@ class RemainderCore {
         order: Int,
         remainderType: RemainderType
     ): Double {
+        // 检查阶数是否超出支持范围
+        if (order > MAX_SUPPORTED_ORDER) {
+            throw IllegalArgumentException("泰勒展开阶数过高，最多支持${MAX_SUPPORTED_ORDER}阶")
+        }
+        
         return when (remainderType) {
             RemainderType.LAGRANGE -> calculateLagrangeRemainder(function, x, x0, order)
             RemainderType.CAUCHY -> calculateCauchyRemainder(function, x, x0, order)
@@ -45,16 +53,21 @@ class RemainderCore {
         // 估计ξ值，通常取x0和x之间的中点
         val xi = (x0 + x) / 2
         
-        // 计算(n+1)阶导数值
-        val derivative = function.derivativeFunctions[order + 1](xi)
-        
-        // 计算(n+1)!
-        val factorial = adaTaylorCore.factorial(order + 1)
-        
-        // 计算(x-x0)^(n+1)
-        val xMinusX0Pow = (x - x0).pow(order + 1)
-        
-        return derivative * xMinusX0Pow / factorial
+        try {
+            // 计算(n+1)阶导数值
+            val derivative = function.derivativeFunctions[order + 1](xi)
+            
+            // 计算(n+1)!
+            val factorial = adaTaylorCore.factorial(order + 1)
+            
+            // 计算(x-x0)^(n+1)
+            val xMinusX0Pow = (x - x0).pow(order + 1)
+            
+            return derivative * xMinusX0Pow / factorial
+        } catch (e: Exception) {
+            // 出现错误时提供更友好的信息
+            throw IllegalArgumentException("计算${order}阶泰勒展开的拉格朗日余项需要${order+1}阶导数，但未找到或计算失败")
+        }
     }
     
     /**
@@ -74,19 +87,24 @@ class RemainderCore {
         // 估计ξ值，取x0和x之间的一个点
         val xi = x0 + (x - x0) * 0.6 // 一个简单的估计，将ξ取在x0和x之间偏向x的位置
         
-        // 计算(n+1)阶导数值
-        val derivative = function.derivativeFunctions[order + 1](xi)
-        
-        // 计算n!
-        val factorial = adaTaylorCore.factorial(order)
-        
-        // 计算(x-x0)^n
-        val xMinusX0Pow = (x - x0).pow(order)
-        
-        // 计算(x-ξ)
-        val xMinusXi = x - xi
-        
-        return derivative * xMinusX0Pow * xMinusXi / factorial
+        try {
+            // 计算(n+1)阶导数值
+            val derivative = function.derivativeFunctions[order + 1](xi)
+            
+            // 计算n!
+            val factorial = adaTaylorCore.factorial(order)
+            
+            // 计算(x-x0)^n
+            val xMinusX0Pow = (x - x0).pow(order)
+            
+            // 计算(x-ξ)
+            val xMinusXi = x - xi
+            
+            return derivative * xMinusX0Pow * xMinusXi / factorial
+        } catch (e: Exception) {
+            // 出现错误时提供更友好的信息
+            throw IllegalArgumentException("计算${order}阶泰勒展开的柯西余项需要${order+1}阶导数，但未找到或计算失败")
+        }
     }
     
     /**

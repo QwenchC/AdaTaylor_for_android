@@ -112,6 +112,7 @@ class RemainderFragment : Fragment() {
     }
     
     private fun setupOrderSlider() {
+        binding.seekbarOrder.max = 10 // 限制最大阶数为10
         binding.seekbarOrder.setOnSeekBarChangeListener(object : android.widget.SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: android.widget.SeekBar?, progress: Int, fromUser: Boolean) {
                 currentOrder = progress
@@ -140,6 +141,12 @@ class RemainderFragment : Fragment() {
                     return@setOnClickListener
                 }
                 
+                // 添加阶数限制
+                if (currentOrder > 10) {
+                    Toast.makeText(context, "泰勒展开阶数过高，最多支持10阶", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+                
                 // 计算余项
                 val remainderResult = remainderViewModel.calculateRemainder(
                     selectedFunction!!,
@@ -162,7 +169,12 @@ class RemainderFragment : Fragment() {
                 // 在图表中显示分析结果
                 displayChart(analysisData)
             } catch (e: Exception) {
-                Toast.makeText(context, "计算出错: ${e.message}", Toast.LENGTH_SHORT).show()
+                // 提供更详细的错误信息
+                val errorMessage = when {
+                    e.message?.contains("导数阶数不足") == true -> "导数阶数不足：当前只支持最多10阶泰勒展开"
+                    else -> "计算出错: ${e.message}"
+                }
+                Toast.makeText(context, errorMessage, Toast.LENGTH_LONG).show()
             }
         }
     }
