@@ -67,7 +67,7 @@ class HomeFragment : Fragment() {
             // 测试简单公式
             mathFormulaViewer.displayFunctionAndTaylor(
                 "测试", 
-                "f(x) = x^2",
+                "x^2",
                 "x^2"
             )
         } catch (e: Exception) {
@@ -228,7 +228,8 @@ class HomeFragment : Fragment() {
         }
     }
     
-    // 修改displayResult方法，确保显示函数表达式
+    // 修改displayResult方法中调用mathFormulaViewer的部分
+
     private fun displayResult(result: TaylorResult) {
         // 确保显示函数表达式
         binding.textResultFunction.text = "函数: ${selectedFunction?.expression ?: "未知函数"}"
@@ -247,7 +248,8 @@ class HomeFragment : Fragment() {
         mathFormulaViewer.displayFunctionAndTaylor(
             selectedFunction!!.name,
             latexExpression,
-            taylorLatex
+            taylorLatex,
+            result.order // 传递展开阶数
         )
     }
 

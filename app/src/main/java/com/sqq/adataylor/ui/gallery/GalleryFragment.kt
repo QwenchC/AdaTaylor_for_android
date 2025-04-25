@@ -74,7 +74,7 @@ class GalleryFragment : Fragment() {
             // 测试简单公式
             mathFormulaViewer.displayFunctionAndTaylor(
                 "测试", 
-                "f(x) = x^2",
+                "x^2",
                 "x^2"
             )
         } catch (e: Exception) {
@@ -252,7 +252,8 @@ class GalleryFragment : Fragment() {
         mathFormulaViewer.displayFunctionAndTaylor(
             selectedFunction!!.name,
             latexExpression,
-            taylorLatex
+            taylorLatex,
+            currentOrder // 传递展开阶数
         )
         
         // 绘制图表 - 原有代码
