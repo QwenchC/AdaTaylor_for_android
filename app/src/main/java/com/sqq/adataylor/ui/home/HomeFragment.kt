@@ -1,5 +1,6 @@
 package com.sqq.adataylor.ui.home
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,8 +13,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.sqq.adataylor.data.CustomFunctionHelper
 import com.sqq.adataylor.data.FunctionModel
 import com.sqq.adataylor.data.TaylorResult
+import com.sqq.adataylor.databinding.DialogCustomFunctionBinding
 import com.sqq.adataylor.databinding.FragmentHomeBinding
 import java.text.DecimalFormat
 
@@ -25,6 +28,8 @@ class HomeFragment : Fragment() {
     private var selectedFunction: FunctionModel? = null
     private var currentOrder = 3
     private val decimalFormat = DecimalFormat("#.########")
+    private val customFunctionHelper = CustomFunctionHelper()
+    private var customFunction: FunctionModel? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,12 +50,95 @@ class HomeFragment : Fragment() {
         setupOrderSeekBar()
         setupAdaptiveSwitch()
         setupCalculateButton()
+        setupCustomFunctionButton() // 添加自定义函数按钮设置
 
         return root
     }
 
+    // 添加自定义函数按钮处理
+    private fun setupCustomFunctionButton() {
+        binding.buttonCustomFunction.setOnClickListener {
+            showCustomFunctionDialog()
+        }
+    }
+
+    private fun showCustomFunctionDialog() {
+        val dialogBinding = DialogCustomFunctionBinding.inflate(LayoutInflater.from(context))
+        
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .setPositiveButton("创建") { _, _ ->
+                createCustomFunction(dialogBinding)
+            }
+            .setNegativeButton("取消", null)
+            .create()
+        
+        // 测试函数按钮
+        dialogBinding.buttonTestFunction.setOnClickListener {
+            val expression = dialogBinding.editFunctionExpression.text.toString()
+            val func = customFunctionHelper.createFunction(expression)
+            
+            if (func != null) {
+                try {
+                    val testValue = func(1.0)
+                    dialogBinding.textTestResult.visibility = View.VISIBLE
+                    dialogBinding.textTestResult.text = "函数测试: f(1) = $testValue"
+                } catch (e: Exception) {
+                    dialogBinding.textTestResult.visibility = View.VISIBLE
+                    dialogBinding.textTestResult.text = "函数测试失败: ${e.message}"
+                }
+            } else {
+                dialogBinding.textTestResult.visibility = View.VISIBLE
+                dialogBinding.textTestResult.text = "函数表达式无效"
+            }
+        }
+        
+        dialog.show()
+    }
+
+    private fun createCustomFunction(dialogBinding: DialogCustomFunctionBinding) {
+        val name = dialogBinding.editFunctionName.text.toString()
+        val expression = dialogBinding.editFunctionExpression.text.toString()
+        val x0 = dialogBinding.editExpansionPoint.text.toString().toDoubleOrNull() ?: 0.0
+        val minDomain = dialogBinding.editDomainMin.text.toString().toDoubleOrNull() ?: -10.0
+        val maxDomain = dialogBinding.editDomainMax.text.toString().toDoubleOrNull() ?: 10.0
+        
+        val function = customFunctionHelper.createCustomFunction(
+            name, 
+            expression, 
+            x0,
+            Pair(minDomain, maxDomain)
+        )
+        
+        if (function != null) {
+            customFunction = function
+            
+            // 更新函数选择列表
+            val functions = homeViewModel.predefinedFunctions.toMutableList()
+            customFunction?.let { functions.add(it) }
+            
+            val functionNames = functions.map { it.name }
+            val adapter = ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                functionNames
+            )
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerFunction.adapter = adapter
+            binding.spinnerFunction.setSelection(functions.size - 1) // 选择新添加的函数
+            
+            Toast.makeText(context, "自定义函数创建成功", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(context, "自定义函数创建失败，请检查表达式", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // 修改setupFunctionSpinner方法，考虑自定义函数
     private fun setupFunctionSpinner() {
-        val functions = homeViewModel.predefinedFunctions
+        val functions = mutableListOf<FunctionModel>().apply {
+            addAll(homeViewModel.predefinedFunctions)
+            customFunction?.let { add(it) }
+        }
         val functionNames = functions.map { it.name }
         
         val adapter = ArrayAdapter(

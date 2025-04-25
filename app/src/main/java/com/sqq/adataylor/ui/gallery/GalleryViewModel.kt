@@ -58,4 +58,40 @@ class GalleryViewModel : ViewModel() {
         
         return Pair(exactPoints, taylorPoints)
     }
+    
+    // 添加误差分析数据生成方法
+
+    /**
+     * 生成不同阶数的Taylor展开误差数据
+     * @param function 函数模型
+     * @param x 计算点
+     * @param x0 展开点
+     * @param maxOrder 最大阶数
+     * @return 阶数-误差对应列表
+     */
+    fun generateErrorAnalysisData(
+        function: FunctionModel,
+        x: Double,
+        x0: Double,
+        maxOrder: Int = 10
+    ): List<Pair<Int, Double>> {
+        val result = mutableListOf<Pair<Int, Double>>()
+        val exactValue = function.mainFunction(x)
+        
+        for (order in 0..maxOrder) {
+            // 获取导数值
+            val derivatives = function.derivativeFunctions
+                .take(order + 1)
+                .map { it(x0) }
+            
+            // 计算Taylor近似值
+            val taylorValue = adaTaylorCore.computeTaylorExpansion(x, x0, derivatives, order)
+            
+            // 计算误差绝对值
+            val error = kotlin.math.abs(exactValue - taylorValue)
+            result.add(Pair(order, error))
+        }
+        
+        return result
+    }
 }

@@ -53,4 +53,7 @@ dependencies {
     
     // 图表库
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // 表达式解析库
+    implementation(libs.exp4j)
 }
