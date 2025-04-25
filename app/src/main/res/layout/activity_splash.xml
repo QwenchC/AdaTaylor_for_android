@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:adjustViewBounds="true"
+        android:maxWidth="280dp"
+        android:maxHeight="280dp"
+        android:padding="16dp"
+        android:src="@drawable/cover"
+        android:contentDescription="启动页封面图片" />
+
+</RelativeLayout>
