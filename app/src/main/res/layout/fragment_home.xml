@@ -58,21 +58,33 @@
                 android:textStyle="bold"
                 android:layout_marginTop="16dp"/>
 
-            <EditText
-                android:id="@+id/edit_x"
+            <!-- 展开点输入框 -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="计算点 x"
-                android:inputType="numberDecimal|numberSigned" />
+                android:hint="展开点 (x₀)">
 
-            <EditText
-                android:id="@+id/edit_x0"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_x0"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal|numberSigned" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- 计算点输入框 -->
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:hint="展开点 x0"
-                android:inputType="numberDecimal|numberSigned" />
+                android:hint="计算点 (x)">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/edit_x"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="numberDecimal|numberSigned" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Switch
                 android:id="@+id/switch_adaptive"
