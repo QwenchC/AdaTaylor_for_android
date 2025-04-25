@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.sqq.adataylor.core.AdaTaylorCore
+import com.sqq.adataylor.data.FunctionManager
 import com.sqq.adataylor.data.FunctionModel
-import com.sqq.adataylor.data.PredefinedFunctions
 import com.sqq.adataylor.data.TaylorResult
 import kotlin.math.abs
 
@@ -17,8 +17,8 @@ class HomeViewModel : ViewModel() {
     
     private val adaTaylorCore = AdaTaylorCore()
     
-    // 预定义函数列表
-    val predefinedFunctions = PredefinedFunctions.getAllFunctions()
+    // 从函数管理器获取预定义函数列表
+    val predefinedFunctions = FunctionManager.getPredefinedFunctions()
     
     // 计算Taylor展开
     fun calculateTaylor(function: FunctionModel, x: Double, x0: Double, order: Int): TaylorResult {

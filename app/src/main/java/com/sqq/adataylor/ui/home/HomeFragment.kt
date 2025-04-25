@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sqq.adataylor.data.CustomFunctionHelper
+import com.sqq.adataylor.data.FunctionManager
 import com.sqq.adataylor.data.FunctionModel
 import com.sqq.adataylor.data.TaylorResult
 import com.sqq.adataylor.databinding.DialogCustomFunctionBinding
@@ -96,6 +97,7 @@ class HomeFragment : Fragment() {
         dialog.show()
     }
 
+    // 修改createCustomFunction方法
     private fun createCustomFunction(dialogBinding: DialogCustomFunctionBinding) {
         val name = dialogBinding.editFunctionName.text.toString()
         val expression = dialogBinding.editFunctionExpression.text.toString()
@@ -111,16 +113,18 @@ class HomeFragment : Fragment() {
         )
         
         if (function != null) {
+            // 设置到函数管理器，确保其他页面也能访问
+            FunctionManager.setCustomFunction(function)
             customFunction = function
             
-            // 重新设置Spinner适配器，确保数据同步
+            // 重新设置Spinner适配器
             setupFunctionSpinner()
             
-            // 找到新添加的自定义函数位置并设置选中
-            val newPosition = (homeViewModel.predefinedFunctions.size + 
-                    (if (customFunction != null) 1 else 0)) - 1
-            if (newPosition >= 0 && newPosition < binding.spinnerFunction.adapter.count) {
-                binding.spinnerFunction.setSelection(newPosition)
+            // 找到新函数位置并选中
+            val functions = FunctionManager.getAllFunctions()
+            val index = functions.indexOfFirst { it.name == function.name }
+            if (index >= 0 && index < binding.spinnerFunction.adapter.count) {
+                binding.spinnerFunction.setSelection(index)
             }
             
             Toast.makeText(context, "自定义函数创建成功", Toast.LENGTH_SHORT).show()
@@ -131,12 +135,8 @@ class HomeFragment : Fragment() {
 
     // 修改setupFunctionSpinner方法
     private fun setupFunctionSpinner() {
-        // 创建一个新的列表，包含预定义函数和自定义函数
-        val functions = mutableListOf<FunctionModel>().apply {
-            addAll(homeViewModel.predefinedFunctions)
-            customFunction?.let { add(it) }
-        }
-        
+        // 从函数管理器获取所有函数
+        val functions = FunctionManager.getAllFunctions()
         val functionNames = functions.map { it.name }
         
         val adapter = ArrayAdapter(
@@ -149,7 +149,6 @@ class HomeFragment : Fragment() {
         binding.spinnerFunction.adapter = adapter
         binding.spinnerFunction.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                // 确保position在functions列表范围内
                 if (position < functions.size) {
                     selectedFunction = functions[position]
                     binding.editX0.setText(selectedFunction?.defaultX0.toString())
@@ -207,8 +206,10 @@ class HomeFragment : Fragment() {
         }
     }
     
+    // 修改displayResult方法，确保显示函数表达式
     private fun displayResult(result: TaylorResult) {
-        binding.textResultFunction.text = "函数: ${selectedFunction?.expression}"
+        // 确保显示函数表达式
+        binding.textResultFunction.text = "函数: ${selectedFunction?.expression ?: "未知函数"}"
         binding.textResultPoints.text = "计算点: x=${result.x}, 展开点: x0=${result.x0}"
         binding.textResultOrder.text = "展开阶数: ${result.order}"
         binding.textResultExact.text = "精确值: ${decimalFormat.format(result.exactValue)}"

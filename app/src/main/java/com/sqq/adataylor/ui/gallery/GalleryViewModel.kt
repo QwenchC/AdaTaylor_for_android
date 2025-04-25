@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.sqq.adataylor.core.AdaTaylorCore
 import com.sqq.adataylor.data.DataPoint
 import com.sqq.adataylor.data.FunctionModel
+import com.sqq.adataylor.data.FunctionManager
 import kotlin.math.exp
 import kotlin.math.ln
 import kotlin.math.cos

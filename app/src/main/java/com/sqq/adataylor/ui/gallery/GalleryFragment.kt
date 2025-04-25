@@ -17,6 +17,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.sqq.adataylor.data.CustomFunctionHelper
+import com.sqq.adataylor.data.FunctionManager
 import com.sqq.adataylor.data.FunctionModel
 import com.sqq.adataylor.databinding.DialogCustomFunctionBinding
 import com.sqq.adataylor.databinding.FragmentGalleryBinding
@@ -52,8 +53,12 @@ class GalleryFragment : Fragment() {
         setupFunctionSpinner()
         setupOrderSeekBar()
         setupPlotButton()
-        setupChart()
         setupCustomFunctionButton()
+
+        // 添加下面这行，确保初始显示函数表达式
+        selectedFunction?.let {
+            binding.textFunctionExpression.text = "f(x) = ${it.expression}"
+        }
 
         return root
     }
@@ -114,16 +119,18 @@ class GalleryFragment : Fragment() {
         )
         
         if (function != null) {
+            // 设置到函数管理器
+            FunctionManager.setCustomFunction(function)
             customFunction = function
             
-            // 重新设置Spinner适配器
+            // 更新Spinner
             setupFunctionSpinner()
             
-            // 找到新添加的自定义函数位置并设置选中
-            val newPosition = (homeViewModel.predefinedFunctions.size + 
-                    (if (customFunction != null) 1 else 0)) - 1
-            if (newPosition >= 0 && newPosition < binding.spinnerFunction.adapter.count) {
-                binding.spinnerFunction.setSelection(newPosition)
+            // 找到新函数位置并选中
+            val functions = FunctionManager.getAllFunctions()
+            val index = functions.indexOfFirst { it.name == function.name }
+            if (index >= 0 && index < binding.spinnerFunction.adapter.count) {
+                binding.spinnerFunction.setSelection(index)
             }
             
             Toast.makeText(context, "自定义函数创建成功", Toast.LENGTH_SHORT).show()
@@ -134,11 +141,8 @@ class GalleryFragment : Fragment() {
 
     // 修改setupFunctionSpinner方法
     private fun setupFunctionSpinner() {
-        val functions = mutableListOf<FunctionModel>().apply {
-            addAll(homeViewModel.predefinedFunctions)
-            customFunction?.let { add(it) }
-        }
-        
+        // 从函数管理器获取所有函数
+        val functions = FunctionManager.getAllFunctions()
         val functionNames = functions.map { it.name }
         
         val adapter = ArrayAdapter(
@@ -153,11 +157,14 @@ class GalleryFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position < functions.size) {
                     selectedFunction = functions[position]
+                    // 更新函数表达式显示
+                    binding.textFunctionExpression.text = "f(x) = ${selectedFunction?.expression ?: ""}"
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
                 selectedFunction = null
+                binding.textFunctionExpression.text = ""
             }
         }
     }
