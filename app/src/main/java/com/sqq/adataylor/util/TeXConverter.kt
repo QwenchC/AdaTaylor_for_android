@@ -38,6 +38,10 @@ object TeXConverter {
             "\\frac{$numerator}{$denominator}"
         }
         
+        // 替换括号
+        texExpression = texExpression.replace("(", "\\left(")
+        texExpression = texExpression.replace(")", "\\right)")
+        
         return texExpression
     }
 }

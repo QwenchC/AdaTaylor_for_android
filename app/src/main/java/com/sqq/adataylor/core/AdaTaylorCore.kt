@@ -146,10 +146,6 @@ private fun formatNumber(number: Double): String {
 
 /**
  * 生成泰勒展开式的LaTeX表示
- * @param x0 展开点
- * @param derivatives 在x0点的各阶导数值列表[f(x0), f'(x0), f''(x0), ...]
- * @param order 展开阶数
- * @return 格式化的泰勒展开式LaTeX文本
  */
 fun generateTaylorExpansionLatex(x0: Double, derivatives: List<Double>, order: Int): String {
     val sb = StringBuilder()
@@ -165,10 +161,6 @@ fun generateTaylorExpansionLatex(x0: Double, derivatives: List<Double>, order: I
                 // 构造(x-x0)部分
                 val xMinusX0 = if (x0 == 0.0) "x" else "(x-${formatNumberLatex(x0)})"
                 
-                // 构造系数和分母部分
-                val coefficient = formatNumberLatex(derivativeValue)
-                val factorial = factorial(i)
-                
                 // 添加符号
                 val sign = if (derivativeValue > 0) "+" else "-"
                 sb.append(" $sign ")
@@ -176,9 +168,9 @@ fun generateTaylorExpansionLatex(x0: Double, derivatives: List<Double>, order: I
                 // 添加完整项
                 val absCoefficient = Math.abs(derivativeValue)
                 if (absCoefficient == 1.0) {
-                    sb.append("\\frac{$xMinusX0^{$i}}{$factorial}")
+                    sb.append("\\frac{$xMinusX0^{$i}}{${factorial(i)}}")
                 } else {
-                    sb.append("\\frac{${formatNumberLatex(Math.abs(derivativeValue))} \\cdot $xMinusX0^{$i}}{$factorial}")
+                    sb.append("\\frac{${formatNumberLatex(Math.abs(derivativeValue))} \\cdot $xMinusX0^{$i}}{${factorial(i)}}")
                 }
             }
         }

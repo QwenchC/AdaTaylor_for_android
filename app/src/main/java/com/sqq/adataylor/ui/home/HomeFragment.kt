@@ -2,6 +2,7 @@ package com.sqq.adataylor.ui.home
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -60,7 +61,20 @@ class HomeFragment : Fragment() {
 
         mathFormulaViewer = MathFormulaViewer(requireContext())
         binding.formulaContainer.addView(mathFormulaViewer.getWebView())
-
+        
+        // 检查是否有公式渲染错误
+        try {
+            // 测试简单公式
+            mathFormulaViewer.displayFunctionAndTaylor(
+                "测试", 
+                "f(x) = x^2",
+                "x^2"
+            )
+        } catch (e: Exception) {
+            Log.e("MathRender", "公式渲染初始化失败: ${e.message}", e)
+            Toast.makeText(requireContext(), "公式渲染初始化失败", Toast.LENGTH_SHORT).show()
+        }
+        
         return root
     }
 
