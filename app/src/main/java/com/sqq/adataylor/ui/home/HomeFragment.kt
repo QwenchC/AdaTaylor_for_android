@@ -19,6 +19,8 @@ import com.sqq.adataylor.data.FunctionModel
 import com.sqq.adataylor.data.TaylorResult
 import com.sqq.adataylor.databinding.DialogCustomFunctionBinding
 import com.sqq.adataylor.databinding.FragmentHomeBinding
+import com.sqq.adataylor.util.MathFormulaViewer
+import com.sqq.adataylor.util.TeXConverter
 import java.text.DecimalFormat
 
 class HomeFragment : Fragment() {
@@ -31,6 +33,9 @@ class HomeFragment : Fragment() {
     private val decimalFormat = DecimalFormat("#.########")
     private val customFunctionHelper = CustomFunctionHelper()
     private var customFunction: FunctionModel? = null
+
+    // 在类级别声明
+    private lateinit var mathFormulaViewer: MathFormulaViewer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +57,9 @@ class HomeFragment : Fragment() {
         setupAdaptiveSwitch()
         setupCalculateButton()
         setupCustomFunctionButton() // 添加自定义函数按钮设置
+
+        mathFormulaViewer = MathFormulaViewer(requireContext())
+        binding.formulaContainer.addView(mathFormulaViewer.getWebView())
 
         return root
     }
@@ -218,11 +226,15 @@ class HomeFragment : Fragment() {
         binding.textResultError.text = "误差: ${decimalFormat.format(result.error)}"
         binding.textResultErrorEstimate.text = "误差估计: ${decimalFormat.format(result.errorEstimate)}"
         
-        // 添加泰勒展开式显示
-        val taylorExpansionText = homeViewModel.getTaylorExpansionText(
-            selectedFunction!!, result.x0, result.order
+        // 生成LaTeX格式的泰勒展开式并显示
+        val latexExpression = TeXConverter.toTex(selectedFunction?.expression ?: "")
+        val taylorLatex = homeViewModel.getTaylorExpansionLatex(selectedFunction!!, result.x0, result.order)
+        
+        mathFormulaViewer.displayFunctionAndTaylor(
+            selectedFunction!!.name,
+            latexExpression,
+            taylorLatex
         )
-        binding.textTaylorExpansion.text = "泰勒展开式: $taylorExpansionText"
     }
 
     override fun onDestroyView() {

@@ -221,14 +221,12 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- 在计算结果部分添加这个TextView -->
-            <TextView
-                android:id="@+id/text_taylor_expansion"
+            <!-- 替换原来的text_taylor_expansion -->
+            <FrameLayout
+                android:id="@+id/formula_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:textIsSelectable="true"
-                android:textSize="14sp"
                 android:background="#F5F5F5"
                 android:padding="8dp" />
         </LinearLayout>

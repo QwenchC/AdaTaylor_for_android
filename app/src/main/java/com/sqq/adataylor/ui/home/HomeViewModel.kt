@@ -72,4 +72,16 @@ class HomeViewModel : ViewModel() {
         
         return adaTaylorCore.generateTaylorExpansionText(x0, derivatives, order)
     }
+    
+    /**
+     * 获取泰勒展开式的LaTeX表示
+     */
+    fun getTaylorExpansionLatex(function: FunctionModel, x0: Double, order: Int): String {
+        // 获取导数值
+        val derivatives = function.derivativeFunctions
+            .take(order + 1)
+            .map { it(x0) }
+        
+        return adaTaylorCore.generateTaylorExpansionLatex(x0, derivatives, order)
+    }
 }

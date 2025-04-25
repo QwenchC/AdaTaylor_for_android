@@ -143,4 +143,63 @@ private fun formatNumber(number: Double): String {
         }
     }
 }
+
+/**
+ * 生成泰勒展开式的LaTeX表示
+ * @param x0 展开点
+ * @param derivatives 在x0点的各阶导数值列表[f(x0), f'(x0), f''(x0), ...]
+ * @param order 展开阶数
+ * @return 格式化的泰勒展开式LaTeX文本
+ */
+fun generateTaylorExpansionLatex(x0: Double, derivatives: List<Double>, order: Int): String {
+    val sb = StringBuilder()
+    
+    // 添加第一项 f(x0)
+    sb.append(formatNumberLatex(derivatives[0]))
+    
+    // 添加剩余项
+    for (i in 1..order) {
+        if (i < derivatives.size) {
+            val derivativeValue = derivatives[i]
+            if (derivativeValue != 0.0) {
+                // 构造(x-x0)部分
+                val xMinusX0 = if (x0 == 0.0) "x" else "(x-${formatNumberLatex(x0)})"
+                
+                // 构造系数和分母部分
+                val coefficient = formatNumberLatex(derivativeValue)
+                val factorial = factorial(i)
+                
+                // 添加符号
+                val sign = if (derivativeValue > 0) "+" else "-"
+                sb.append(" $sign ")
+                
+                // 添加完整项
+                val absCoefficient = Math.abs(derivativeValue)
+                if (absCoefficient == 1.0) {
+                    sb.append("\\frac{$xMinusX0^{$i}}{$factorial}")
+                } else {
+                    sb.append("\\frac{${formatNumberLatex(Math.abs(derivativeValue))} \\cdot $xMinusX0^{$i}}{$factorial}")
+                }
+            }
+        }
+    }
+    
+    return sb.toString()
+}
+
+/**
+ * 格式化数字为LaTeX格式
+ */
+private fun formatNumberLatex(number: Double): String {
+    val absNumber = Math.abs(number)
+    return when {
+        number == 0.0 -> "0"
+        absNumber < 0.0001 || absNumber > 10000 -> String.format("%.4e", number)
+        number.toInt().toDouble() == number -> number.toInt().toString()
+        else -> {
+            val formatted = String.format("%.4f", number)
+            formatted.replace(Regex("0+$"), "").replace(Regex("\\.$"), "")
+        }
+    }
+}
 }

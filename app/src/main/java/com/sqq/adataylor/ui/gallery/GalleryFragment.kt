@@ -22,6 +22,8 @@ import com.sqq.adataylor.data.FunctionModel
 import com.sqq.adataylor.databinding.DialogCustomFunctionBinding
 import com.sqq.adataylor.databinding.FragmentGalleryBinding
 import com.sqq.adataylor.ui.home.HomeViewModel
+import com.sqq.adataylor.util.MathFormulaViewer
+import com.sqq.adataylor.util.TeXConverter
 
 class GalleryFragment : Fragment() {
 
@@ -33,6 +35,9 @@ class GalleryFragment : Fragment() {
     private var currentOrder = 3
     private val customFunctionHelper = CustomFunctionHelper()
     private var customFunction: FunctionModel? = null
+
+    // 在类级别声明
+    private lateinit var mathFormulaViewer: MathFormulaViewer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,6 +64,9 @@ class GalleryFragment : Fragment() {
         selectedFunction?.let {
             binding.textFunctionExpression.text = "f(x) = ${it.expression}"
         }
+
+        mathFormulaViewer = MathFormulaViewer(requireContext())
+        binding.formulaContainer.addView(mathFormulaViewer.getWebView())
 
         return root
     }
@@ -213,6 +221,7 @@ class GalleryFragment : Fragment() {
         chart.setPinchZoom(true)
     }
 
+    // 修改plotFunction方法
     private fun plotFunction(start: Double, end: Double, x0: Double) {
         val (exactPoints, taylorPoints) = galleryViewModel.generateFunctionPoints(
             selectedFunction!!,
@@ -222,11 +231,15 @@ class GalleryFragment : Fragment() {
             currentOrder
         )
         
-        // 显示泰勒展开式
-        val taylorExpansionText = galleryViewModel.getTaylorExpansionText(
-            selectedFunction!!, x0, currentOrder
+        // 显示公式格式的泰勒展开式
+        val latexExpression = TeXConverter.toTex(selectedFunction?.expression ?: "")
+        val taylorLatex = galleryViewModel.getTaylorExpansionLatex(selectedFunction!!, x0, currentOrder)
+        
+        mathFormulaViewer.displayFunctionAndTaylor(
+            selectedFunction!!.name,
+            latexExpression,
+            taylorLatex
         )
-        binding.textTaylorExpansion.text = "泰勒展开式: $taylorExpansionText"
         
         // 绘制图表 - 原有代码
         // 转换为Entry对象
