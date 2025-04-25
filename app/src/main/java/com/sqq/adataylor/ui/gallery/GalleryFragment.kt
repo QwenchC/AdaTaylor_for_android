@@ -37,7 +37,6 @@ class GalleryFragment : Fragment() {
     private val customFunctionHelper = CustomFunctionHelper()
     private var customFunction: FunctionModel? = null
 
-    // 在类级别声明
     private lateinit var mathFormulaViewer: MathFormulaViewer
 
     override fun onCreateView(
@@ -61,7 +60,7 @@ class GalleryFragment : Fragment() {
         setupPlotButton()
         setupCustomFunctionButton()
 
-        // 添加下面这行，确保初始显示函数表达式
+        // 确保初始显示函数表达式
         selectedFunction?.let {
             binding.textFunctionExpression.text = "f(x) = ${it.expression}"
         }
@@ -125,7 +124,6 @@ class GalleryFragment : Fragment() {
         dialog.show()
     }
 
-    // 修改createCustomFunction方法
     private fun createCustomFunction(dialogBinding: DialogCustomFunctionBinding) {
         val name = dialogBinding.editFunctionName.text.toString()
         val expression = dialogBinding.editFunctionExpression.text.toString()
@@ -161,7 +159,6 @@ class GalleryFragment : Fragment() {
         }
     }
 
-    // 修改setupFunctionSpinner方法
     private fun setupFunctionSpinner() {
         // 从函数管理器获取所有函数
         val functions = FunctionManager.getAllFunctions()
@@ -179,7 +176,6 @@ class GalleryFragment : Fragment() {
             override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                 if (position < functions.size) {
                     selectedFunction = functions[position]
-                    // 更新函数表达式显示
                     binding.textFunctionExpression.text = "f(x) = ${selectedFunction?.expression ?: ""}"
                 }
             }
@@ -235,7 +231,6 @@ class GalleryFragment : Fragment() {
         chart.setPinchZoom(true)
     }
 
-    // 修改plotFunction方法
     private fun plotFunction(start: Double, end: Double, x0: Double) {
         val (exactPoints, taylorPoints) = galleryViewModel.generateFunctionPoints(
             selectedFunction!!,
@@ -256,7 +251,7 @@ class GalleryFragment : Fragment() {
             currentOrder // 传递展开阶数
         )
         
-        // 绘制图表 - 原有代码
+        // 绘制图表
         // 转换为Entry对象
         val exactEntries = exactPoints.map { Entry(it.x.toFloat(), it.y.toFloat()) }
         val taylorEntries = taylorPoints.map { Entry(it.x.toFloat(), it.y.toFloat()) }

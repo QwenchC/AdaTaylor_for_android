@@ -78,7 +78,6 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    // 添加自定义函数按钮处理
     private fun setupCustomFunctionButton() {
         binding.buttonCustomFunction.setOnClickListener {
             showCustomFunctionDialog()
@@ -119,7 +118,6 @@ class HomeFragment : Fragment() {
         dialog.show()
     }
 
-    // 修改createCustomFunction方法
     private fun createCustomFunction(dialogBinding: DialogCustomFunctionBinding) {
         val name = dialogBinding.editFunctionName.text.toString()
         val expression = dialogBinding.editFunctionExpression.text.toString()
@@ -227,11 +225,8 @@ class HomeFragment : Fragment() {
             displayResult(result)
         }
     }
-    
-    // 修改displayResult方法中调用mathFormulaViewer的部分
 
     private fun displayResult(result: TaylorResult) {
-        // 确保显示函数表达式
         binding.textResultFunction.text = "函数: ${selectedFunction?.expression ?: "未知函数"}"
         binding.textResultPoints.text = "计算点: x=${result.x}, 展开点: x0=${result.x0}"
         binding.textResultOrder.text = "展开阶数: ${result.order}"

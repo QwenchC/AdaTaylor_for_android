@@ -83,7 +83,6 @@ class RemainderViewModel : ViewModel() {
             } catch (e: Exception) {
                 // 记录已经计算的阶数，不中断整个过程
                 Log.d("RemainderViewModel", "计算${order}阶余项失败: ${e.message}")
-                // 不需要抛出异常，只需跳出循环
                 break
             }
         }

@@ -221,7 +221,6 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- 替换原来的text_taylor_expansion -->
             <FrameLayout
                 android:id="@+id/formula_container"
                 android:layout_width="match_parent"

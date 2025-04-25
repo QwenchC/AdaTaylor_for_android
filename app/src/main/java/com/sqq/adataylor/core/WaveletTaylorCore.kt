@@ -117,7 +117,7 @@ class WaveletTaylorCore {
         taylorValue: Double
     ): Double {
         // 对区间内一系列点进行采样，确保点数是2的幂次
-        val sampleCount = findNearestPowerOfTwo(64) // 可调整为更大的值
+        val sampleCount = findNearestPowerOfTwo(64)
         val sampledX = DoubleArray(sampleCount)
         val sampledResiduals = DoubleArray(sampleCount)
         
@@ -134,7 +134,7 @@ class WaveletTaylorCore {
             // 对残差进行小波变换
             val coefficients = waveletCore.discreteWaveletTransform(sampledResiduals, waveletType)
             
-            // 对系数进行处理（可选，例如阈值处理）
+            // 对系数进行处理
             
             // 小波重构
             val reconstructedResiduals = waveletCore.inverseWaveletTransform(coefficients, waveletType)

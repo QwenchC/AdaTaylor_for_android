@@ -214,7 +214,7 @@ class PadeFragment : Fragment() {
             padeN = padeN
         )
         
-        // 更新误差表格
+        // 误差表格
         val tableRows = listOf(
             binding.row1,
             binding.row2,
@@ -261,7 +261,7 @@ class PadeFragment : Fragment() {
             row.addView(ratioTextView)
         }
         
-        // 更新结论
+        // 结论
         val theoreticalPower = "O(|x - x0|^$padeM)"
         binding.textConclusion.text = "结论：泰勒-帕德误差比满足 $theoreticalPower，" +
                 "对于有理函数特性的函数，当距离展开点较远时，帕德逼近通常比泰勒展开更精确。"

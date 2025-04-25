@@ -85,11 +85,9 @@ class RemainderFragment : Fragment() {
             }
             
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // 不做任何事情
             }
         }
         
-        // 修复自定义函数按钮
         binding.buttonCustomFunction.setOnClickListener {
             // 简化处理，只显示提示
             Toast.makeText(context, "目前暂不支持自定义函数", Toast.LENGTH_SHORT).show()
@@ -111,7 +109,6 @@ class RemainderFragment : Fragment() {
             }
             
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // 不做任何事情
             }
         }
     }

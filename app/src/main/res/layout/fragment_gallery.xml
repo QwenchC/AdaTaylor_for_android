@@ -188,7 +188,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_plot" />
 
-        <!-- 使用ConstraintLayout确保图表1:1比例 -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/chart_container"
             android:layout_width="0dp"

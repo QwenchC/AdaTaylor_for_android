@@ -11,7 +11,7 @@ object TeXConverter {
     fun toTex(expression: String): String {
         var texExpression = expression
         
-        // 替换常见的数学函数
+        // 常见数学函数
         texExpression = texExpression.replace("sin(", "\\sin(")
         texExpression = texExpression.replace("cos(", "\\cos(")
         texExpression = texExpression.replace("tan(", "\\tan(")
@@ -22,7 +22,7 @@ object TeXConverter {
         texExpression = texExpression.replace("sqrt(", "\\sqrt{")
         texExpression = texExpression.replace("pi", "\\pi")
         
-        // 替换幂运算
+        // 幂运算
         val powerRegex = Regex("([a-zA-Z0-9]+)\\^([a-zA-Z0-9]+)")
         texExpression = powerRegex.replace(texExpression) { matchResult ->
             val base = matchResult.groupValues[1]
@@ -30,7 +30,7 @@ object TeXConverter {
             "$base^{$exponent}"
         }
         
-        // 替换分数
+        // 分数
         val fractionRegex = Regex("([a-zA-Z0-9]+)/([a-zA-Z0-9]+)")
         texExpression = fractionRegex.replace(texExpression) { matchResult ->
             val numerator = matchResult.groupValues[1]
@@ -38,7 +38,7 @@ object TeXConverter {
             "\\frac{$numerator}{$denominator}"
         }
         
-        // 替换括号
+        // 括号
         texExpression = texExpression.replace("(", "\\left(")
         texExpression = texExpression.replace(")", "\\right)")
         

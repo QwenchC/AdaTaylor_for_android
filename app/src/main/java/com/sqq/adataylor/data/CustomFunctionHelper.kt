@@ -27,7 +27,7 @@ class CustomFunctionHelper {
         }
     }
     
-    // 修复数值导数计算函数
+    // 数值导数计算函数
     fun numericalDerivative(
         func: (Double) -> Double,
         order: Int,
@@ -73,9 +73,9 @@ class CustomFunctionHelper {
         
         // 创建导数函数列表
         val derivativeFunctions = mutableListOf<(Double) -> Double>()
-        derivativeFunctions.add(mainFunc) // 0阶导数就是函数本身
+        derivativeFunctions.add(mainFunc)
         
-        // 添加10个导数函数
+        // 添加30个导数函数
         for (i in 1..29) {
             val derivFunc: (Double) -> Double = numericalDerivative(mainFunc, i)
             derivativeFunctions.add(derivFunc)

@@ -41,9 +41,8 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.appBarMain.toolbar)
 
-        // 替换 FAB 的点击监听器
+        // FAB 的点击监听器
         binding.appBarMain.fab.setOnClickListener {
-            // 创建并显示学生信息对话框
             showStudentInfoDialog()
         }
 
@@ -74,7 +73,6 @@ class MainActivity : AppCompatActivity() {
             @SuppressLint("ClickableViewAccessibility")
             private val longPressRunnable = Runnable {
                 longPressed = true
-                // 可选：提供触觉反馈表示进入拖动模式
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     fab.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS)
                 }
@@ -182,7 +180,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showTheoryContent() {
-        // 使用WebView创建一个对话框，以支持LaTeX公式渲染
+        // 使用WebView创建一个对话框
         val dialog = Dialog(this)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_theory_content)
@@ -241,8 +239,6 @@ class MainActivity : AppCompatActivity() {
                 <p>其中\(\xi\)在\(x_0\)与\(x\)之间。若在区间\([a,b]\)上有\(\left|f^{(n+1)}(x)\right| \leq M_{n+1}\)，则余项的绝对值满足：</p>
                 <p>\[|R_n(x)| \leq \frac{M_{n+1}}{(n+1)!}|x-x_0|^{n+1}\]</p>
                 
-                <!-- 继续其他内容... -->
-                
                 <h3>1.2 自适应阶数选择的数学准则</h3>
                 <p>给定误差容限\(\varepsilon\)和定义域\([a,b]\)，AdaTaylor系统基于以下数学准则自动选择展开阶数：</p>
                 
@@ -260,8 +256,6 @@ class MainActivity : AppCompatActivity() {
                 </div>
 
                 <p>更多内容见毕设论文……</p>
-                
-                <!-- 继续更多内容... -->
                 
             </body>
             <script>
@@ -281,7 +275,7 @@ class MainActivity : AppCompatActivity() {
         
         webView.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null)
         
-        // 添加关闭按钮
+        // 关闭按钮
         val closeButton = dialog.findViewById<Button>(R.id.button_close_theory)
         closeButton.setOnClickListener {
             dialog.dismiss()

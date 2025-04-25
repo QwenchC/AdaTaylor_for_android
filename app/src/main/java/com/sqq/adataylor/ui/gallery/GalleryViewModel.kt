@@ -59,8 +59,6 @@ class GalleryViewModel : ViewModel() {
         
         return Pair(exactPoints, taylorPoints)
     }
-    
-    // 添加误差分析数据生成方法
 
     /**
      * 生成不同阶数的Taylor展开误差数据
