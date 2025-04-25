@@ -12,7 +12,7 @@ class RemainderCore {
     private val adaTaylorCore = AdaTaylorCore()
     
     // 添加最大支持阶数的常量
-    private val MAX_SUPPORTED_ORDER = 10
+    private val MAX_SUPPORTED_ORDER = 30
     
     /**
      * 计算泰勒展开的余项

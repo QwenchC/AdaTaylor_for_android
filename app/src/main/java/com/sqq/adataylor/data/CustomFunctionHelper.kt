@@ -76,7 +76,7 @@ class CustomFunctionHelper {
         derivativeFunctions.add(mainFunc) // 0阶导数就是函数本身
         
         // 添加10个导数函数
-        for (i in 1..9) {
+        for (i in 1..29) {
             val derivFunc: (Double) -> Double = numericalDerivative(mainFunc, i)
             derivativeFunctions.add(derivFunc)
         }

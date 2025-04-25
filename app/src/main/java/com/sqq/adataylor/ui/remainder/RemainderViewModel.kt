@@ -1,5 +1,6 @@
 package com.sqq.adataylor.ui.remainder
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.sqq.adataylor.core.AdaTaylorCore
 import com.sqq.adataylor.core.RemainderCore
@@ -64,20 +65,27 @@ class RemainderViewModel : ViewModel() {
         x: Double,
         x0: Double,
         remainderType: RemainderType,
-        maxOrder: Int = 10
+        maxOrder: Int = 8  // 默认修改为8阶，防止超出实际支持范围
     ): List<Pair<Int, Double>> {
         val results = mutableListOf<Pair<Int, Double>>()
         
         for (order in 1..maxOrder) {
-            val remainderValue = remainderCore.calculateRemainder(
-                function = function,
-                x = x,
-                x0 = x0,
-                order = order,
-                remainderType = remainderType
-            )
-            
-            results.add(Pair(order, abs(remainderValue)))
+            try {
+                val remainderValue = remainderCore.calculateRemainder(
+                    function = function,
+                    x = x,
+                    x0 = x0,
+                    order = order,
+                    remainderType = remainderType
+                )
+                
+                results.add(Pair(order, abs(remainderValue)))
+            } catch (e: Exception) {
+                // 记录已经计算的阶数，不中断整个过程
+                Log.d("RemainderViewModel", "计算${order}阶余项失败: ${e.message}")
+                // 不需要抛出异常，只需跳出循环
+                break
+            }
         }
         
         return results
