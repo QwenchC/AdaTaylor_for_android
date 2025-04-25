@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/text_level_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="级别 1"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="近似系数:"
+        android:layout_marginTop="4dp" />
+
+    <com.sqq.adataylor.ui.wavelet.SignalChartView
+        android:id="@+id/chart_approximation"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="细节系数:"
+        android:layout_marginTop="4dp" />
+
+    <com.sqq.adataylor.ui.wavelet.SignalChartView
+        android:id="@+id/chart_detail"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginTop="4dp" />
+
+</LinearLayout>

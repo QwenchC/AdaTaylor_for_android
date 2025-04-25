@@ -10,4 +10,5 @@
     <string name="menu_home">计算器</string>
     <string name="menu_gallery">可视化</string>
     <string name="menu_slideshow">示例</string>
+    <string name="menu_wavelet">小波分析</string>
 </resources>
